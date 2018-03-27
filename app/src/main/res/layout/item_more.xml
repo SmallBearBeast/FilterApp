@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ll_vertical"
+    android:background="@color/cl_white">
+
+    <LinearLayout
+        style="@style/ll_horizontal"
+        android:padding="@dimen/dp_10">
+
+        <ImageView
+            style="@style/iv_normal_30"
+            android:src="@drawable/filter"
+            android:tint="@color/cl_gray_7" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="查看相册"
+            android:textColor="@color/cl_gray_7"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+    <View style="@style/v_divider" />
+
+    <LinearLayout
+        style="@style/ll_horizontal"
+        android:padding="@dimen/dp_10">
+
+        <ImageView
+            style="@style/iv_normal_30"
+            android:src="@drawable/filter"
+            android:tint="@color/cl_gray_7" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="查看相册"
+            android:textColor="@color/cl_gray_7"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+    <View style="@style/v_divider" />
+
+    <LinearLayout
+        style="@style/ll_horizontal"
+        android:padding="@dimen/dp_10">
+
+        <ImageView
+            style="@style/iv_normal_30"
+            android:src="@drawable/filter"
+            android:tint="@color/cl_gray_7" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="查看相册"
+            android:textColor="@color/cl_gray_7"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+    <View style="@style/v_divider" />
+
+    <LinearLayout
+        android:id="@+id/ll_photo_detail"
+        style="@style/ll_horizontal"
+        android:padding="@dimen/dp_10">
+
+        <ImageView
+            style="@style/iv_normal_30"
+            android:src="@drawable/filter"
+            android:tint="@color/cl_gray_7" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="详情"
+            android:textColor="@color/cl_gray_7" />
+    </LinearLayout>
+
+    <View style="@style/v_divider" />
+</LinearLayout>

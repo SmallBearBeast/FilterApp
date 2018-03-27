@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="cl_app">#ed813d</color>
+
+    <color name="cl_app_1">#df7020</color>
+
+    <color name="cl_app_2">#df8920</color>
+    //base color
+    <color name="cl_white">#ffffff</color>
+    //different alpha white
+    <color name="cl_white_t_1">#19ffffff</color>
+    <color name="cl_white_t_2">#33ffffff</color>
+    <color name="cl_white_t_3">#4cffffff</color>
+    <color name="cl_white_t_4">#66ffffff</color>
+    <color name="cl_white_t_5">#7fffffff</color>
+    <color name="cl_white_t_6">#99ffffff</color>
+    <color name="cl_white_t_7">#b2ffffff</color>
+    <color name="cl_white_t_8">#ccffffff</color>
+    <color name="cl_white_t_9">#e6ffffff</color>
+
+    <color name="cl_black">#000000</color>
+    //different alpha black
+    <color name="cl_black_t_1">#19000000</color>
+    <color name="cl_black_t_2">#33000000</color>
+    <color name="cl_black_t_3">#4c000000</color>
+    <color name="cl_black_t_4">#66000000</color>
+    <color name="cl_black_t_5">#7f000000</color>
+    <color name="cl_black_t_6">#99000000</color>
+    <color name="cl_black_t_7">#b2000000</color>
+    <color name="cl_black_t_8">#cc000000</color>
+    <color name="cl_black_t_9">#e6000000</color>
+
+    //different gray
+    <color name="cl_gray_9">#191919</color>
+    <color name="cl_gray_8">#333333</color>
+    <color name="cl_gray_7">#4c4c4c</color>
+    <color name="cl_gray_6">#666666</color>
+    <color name="cl_gray_5">#7f7f7f</color>
+    <color name="cl_gray_4">#999999</color>
+    <color name="cl_gray_3">#b2b2b2</color>
+    <color name="cl_gray_2">#cccccc</color>
+    <color name="cl_gray_1">#e6e6e6</color>
+    <color name="cl_gray_0">#f5f5f5</color>
+
+    <color name="cl_yellow_1">#fcc604</color>
+
+    <array name="label_color_one">
+        <item>#fa9cbc</item>
+        <item>#9cedfa</item>
+        <item>#9cfab5</item>
+        <item>#faf59c</item>
+    </array>
+
+    <array name="label_color_two">
+        <item>#ff91f6</item>
+        <item>#9ca1fa</item>
+        <item>#95979b</item>
+    </array>
+
+    <color name="cl_blue">#007dd6</color>
+
+    <color name="cl_red">#f2353f</color>
+
+    <color name="cl_oriange">#f29435</color>
+
+    <color name="cl_blue_9">#008bed</color>
+
+    <color name="cl_blue_5">#ab6bb7ed</color>
+
+    <color name="cl_red_t_6">#a3f2353f</color>
+
+    <color name="cl_green">#00ae20</color>
+
+    <color name="cl_green_9">#00bf23</color>
+</resources>

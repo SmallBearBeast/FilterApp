@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ll_vertical"
+    android:layout_height="match_parent"
+    android:background="@color/cl_white">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10">
+
+        <ImageView
+            style="@style/iv_normal_30"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/back_1"
+            android:tint="@color/cl_gray_7" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_gravity="center"
+            android:text="照片详情"
+            android:textColor="@color/cl_gray_7" />
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            style="@style/iv_normal_40"
+            android:layout_gravity="right|center_vertical"
+            android:padding="@dimen/dp_0"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pic_9" />
+    </FrameLayout>
+
+    <View style="@style/v_divider" />
+
+    <ScrollView
+        android:padding="@dimen/dp_30"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="left"
+            style="@style/ll_vertical">
+
+            <LinearLayout
+                style="@style/ll_horizontal">
+                <TextView
+                    android:text="拍摄时间 : "
+                    android:textColor="@color/cl_gray_7"
+                    style="@style/tv_normal" />
+                <TextView
+                    android:id="@+id/tv_take_time"
+                    android:text="2018-12-24 23:44"
+                    android:textColor="@color/cl_gray_5"
+                    android:ellipsize="none"
+                    android:maxLines="5"
+                    style="@style/tv_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="left"
+                android:layout_marginTop="@dimen/dp_20"
+                style="@style/ll_horizontal">
+                <TextView
+                    android:text="图片宽高 : "
+                    android:textColor="@color/cl_gray_7"
+                    style="@style/tv_normal" />
+                <TextView
+                    android:ellipsize="none"
+                    android:maxLines="5"
+                    android:id="@+id/tv_width_height"
+                    android:text="2018-12-24 23:44"
+                    android:textColor="@color/cl_gray_5"
+                    style="@style/tv_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="left"
+                android:layout_marginTop="@dimen/dp_20"
+                style="@style/ll_horizontal">
+                <TextView
+                    android:text="文件信息 : "
+                    android:textColor="@color/cl_gray_7"
+                    style="@style/tv_normal" />
+                <TextView
+                    android:ellipsize="none"
+                    android:maxLines="5"
+                    android:id="@+id/tv_file_msg"
+                    android:text="2018-12-24 23:44"
+                    android:textColor="@color/cl_gray_5"
+                    style="@style/tv_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="left"
+                android:layout_marginTop="@dimen/dp_20"
+                style="@style/ll_horizontal">
+                <TextView
+                    android:text="拍摄参数 : "
+                    android:textColor="@color/cl_gray_7"
+                    style="@style/tv_normal" />
+                <TextView
+                    android:ellipsize="none"
+                    android:maxLines="5"
+                    android:id="@+id/tv_photo_param"
+                    android:text="2018-12-24 23:44"
+                    android:textColor="@color/cl_gray_5"
+                    style="@style/tv_normal" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

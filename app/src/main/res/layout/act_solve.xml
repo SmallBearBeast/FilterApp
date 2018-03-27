@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ll_vertical"
+    android:layout_height="match_parent"
+    android:background="@color/cl_white">
+
+    <FrameLayout
+        android:id="@+id/fl_date"
+        style="@style/fl_normal"
+        android:layout_height="@dimen/dp_60"
+        android:background="@color/cl_white">
+
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+            android:id="@+id/siv_back"
+            style="@style/iv_normal_30"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/back_1"
+            android:tint="@color/cl_gray_7" />
+
+        <LinearLayout
+            style="@style/ll_vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tv_date_1"
+                style="@style/tv_normal"
+                android:text="图像处理"
+                android:textColor="@color/cl_gray_9"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        style="@style/fl_normal"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_solve_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/pic_9" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_loading"
+            style="@style/iv_normal_50"
+            android:layout_gravity="center"
+            android:src="@drawable/loading" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_solve_case"
+        style="@style/fl_normal">
+
+
+        <LinearLayout
+            android:id="@+id/ll_solve_case"
+            style="@style/ll_vertical">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_120">
+
+                <LinearLayout
+                    style="@style/ll_horizontal"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:id="@+id/filter"
+                        layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+
+                    <include layout="@layout/item_solve_case" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <FrameLayout
+                style="@style/fl_normal"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15">
+
+                <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+                    android:id="@+id/stv_cancel"
+                    style="@style/tv_normal"
+                    android:layout_gravity="center_vertical|left"
+                    android:paddingBottom="@dimen/dp_3"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_3"
+                    android:text="取消"
+                    android:textColor="@color/cl_gray_8"
+                    android:textSize="@dimen/sp_14"
+                    app:sv_radius="@dimen/dp_5"
+                    app:sv_stroke_color="@color/cl_gray_7"
+                    app:sv_stroke_width="@dimen/dp_1" />
+
+                <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+                    android:id="@+id/stv_save"
+                    style="@style/tv_normal"
+                    android:layout_gravity="center_vertical|right"
+                    android:paddingBottom="@dimen/dp_3"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_3"
+                    android:text="保存"
+                    android:textColor="@color/cl_gray_5"
+                    android:textSize="@dimen/sp_14"
+                    app:sv_radius="@dimen/dp_5"
+                    app:sv_stroke_color="@color/cl_gray_5"
+                    app:sv_stroke_width="@dimen/dp_1" />
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/fl_normal"
+    android:layout_height="match_parent">
+
+    <com.example.jason.heartratedetection.ui.widget.CameraPhotoView
+        android:id="@+id/cpv_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:sv_solid="@color/cl_white" />
+
+    <ImageView
+        android:id="@+id/iv_flash"
+        style="@style/iv_normal_40"
+        android:layout_gravity="left"
+        android:layout_margin="@dimen/dp_10"
+        android:src="@drawable/light" />
+
+    <LinearLayout
+        style="@style/ll_vertical"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/iv_reverse_camera"
+            style="@style/iv_normal_40"
+            android:src="@drawable/reverse" />
+
+        <ImageView
+            style="@style/iv_normal_40"
+            android:layout_marginBottom="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_50"
+            android:src="@drawable/filter" />
+
+        <ImageView
+            style="@style/iv_normal_40"
+            android:src="@drawable/more_1" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_120"
+        android:layout_gravity="bottom"
+        android:background="@color/cl_black">
+
+        <ImageView
+            style="@style/iv_normal_40"
+            android:id="@+id/iv_photo"
+            android:layout_toLeftOf="@+id/iv_take_photo"
+            android:padding="@dimen/dp_2"
+            android:background="@color/cl_white"
+            android:scaleType="fitXY"
+            android:src="@drawable/pic_8"/>
+
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+            android:id="@+id/iv_take_photo"
+            style="@style/iv_normal_50"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginRight="@dimen/dp_40"
+            android:src="@drawable/take_picture" />
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+            android:id="@+id/siv_take_video"
+            style="@style/iv_normal_40"
+            android:layout_toRightOf="@+id/iv_take_photo"
+            android:padding="@dimen/dp_8"
+            android:src="@drawable/take_video"
+            android:tint="@color/cl_white"
+            app:sv_shape="oval"
+            app:sv_stroke_color="@color/cl_white"
+            app:sv_stroke_width="@dimen/dp_1" />
+
+        <TextView
+            style="@style/tv_normal"
+            android:layout_above="@+id/iv_take_photo"
+            android:text="拍照"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_container"
+    style="@style/rl_normal"
+    android:background="@color/cl_black">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_photo_container"
+        style="@style/vp_normal" />
+
+    <FrameLayout
+        android:id="@+id/fl_date"
+        style="@style/fl_normal"
+        android:layout_height="@dimen/dp_60"
+        android:background="@color/cl_white">
+
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+            android:id="@+id/siv_back"
+            style="@style/iv_normal_30"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/back_1"
+            android:tint="@color/cl_gray_7" />
+
+        <LinearLayout
+            style="@style/ll_vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tv_date_1"
+                style="@style/tv_normal"
+                android:text="2015年9月20日"
+                android:textColor="@color/cl_gray_9"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:id="@+id/tv_date_2"
+                style="@style/tv_normal"
+                android:layout_below="@+id/tv_date_1"
+                android:text="11:20"
+                android:textColor="@color/cl_gray_7"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_solve"
+        style="@style/ll_vertical"
+        android:layout_alignParentBottom="true">
+
+        <View style="@style/v_divider" />
+
+        <LinearLayout
+            style="@style/ll_center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_70"
+            android:background="@color/cl_white">
+
+            <LinearLayout
+                style="@style/ll_vertical"
+                android:layout_width="wrap_content">
+
+                <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+                    android:id="@+id/siv_filter"
+                    style="@style/iv_normal_30"
+                    android:src="@drawable/filter"
+                    android:tint="@color/cl_gray_7"
+                    app:sv_radius="@dimen/dp_5"
+                    app:sv_stroke_color="@color/cl_gray_3"
+                    app:sv_stroke_width="@dimen/dp_1" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="滤镜"
+                    android:textColor="@color/cl_gray_7"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ll_vertical"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/dp_50"
+                android:layout_marginRight="@dimen/dp_50">
+
+                <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+                    android:id="@+id/siv_delete"
+                    style="@style/iv_normal_30"
+                    android:src="@drawable/delete"
+                    android:tint="@color/cl_gray_7"
+                    app:sv_radius="@dimen/dp_5"
+                    app:sv_stroke_color="@color/cl_gray_3"
+                    app:sv_stroke_width="@dimen/dp_1" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="删除"
+                    android:textColor="@color/cl_gray_7"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/ll_vertical"
+                android:layout_width="wrap_content">
+
+                <com.example.jason.heartratedetection.ui.widget.shape.ShapeImageView
+                    android:id="@+id/siv_more"
+                    style="@style/iv_normal_30"
+                    android:src="@drawable/more_1"
+                    android:tint="@color/cl_gray_7"
+                    app:sv_radius="@dimen/dp_5"
+                    app:sv_stroke_color="@color/cl_gray_3"
+                    app:sv_stroke_width="@dimen/dp_1" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="更多"
+                    android:textColor="@color/cl_gray_7"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

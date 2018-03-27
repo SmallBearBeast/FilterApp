@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ll_vertical">
+
+    <LinearLayout
+        style="@style/ll_center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+            android:id="@+id/stv_0"
+            style="@style/tv_normal"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/cl_white"
+            android:textSize="@dimen/sp_12"
+            app:sv_shape="oval"
+            app:sv_solid="@color/cl_gray_5" />
+
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+            android:id="@+id/stv_25"
+            style="@style/tv_normal"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center"
+            android:text="25"
+            android:textColor="@color/cl_gray_5"
+            android:textSize="@dimen/sp_12" />
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+            android:id="@+id/stv_50"
+            style="@style/tv_normal"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center"
+            android:text="50"
+            android:textColor="@color/cl_gray_5"
+            android:textSize="@dimen/sp_12" />
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+            style="@style/tv_normal"
+            android:id="@+id/stv_75"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center"
+            android:text="75"
+            android:textColor="@color/cl_gray_5"
+            android:textSize="@dimen/sp_12" />
+
+        <com.example.jason.heartratedetection.ui.widget.shape.ShapeTextView
+            style="@style/tv_normal"
+            android:id="@+id/stv_100"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center"
+            android:text="100"
+            android:textColor="@color/cl_gray_5"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80">
+
+        <LinearLayout
+            style="@style/ll_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/fl_src"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    android:padding="@dimen/dp_0"
+                    style="@style/iv_normal_80"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_height="match_parent"
+                    android:background="@color/cl_black_t_5"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:text="原图"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_backlight"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    android:padding="@dimen/dp_0"
+                    style="@style/iv_normal_80"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cl_black_t_5"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:text="逆光"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    style="@style/iv_normal_80"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dp_0"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    android:text="去雾"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cl_black_t_6"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    style="@style/iv_normal_80"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dp_0"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    android:text="其他"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cl_black_t_6"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    style="@style/iv_normal_80"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dp_0"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    android:text="其他"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cl_black_t_6"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_2">
+
+                <ImageView
+                    style="@style/iv_normal_80"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dp_0"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_8" />
+
+                <TextView
+                    android:text="其他"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cl_black_t_6"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:textSize="@dimen/sp_14" />
+            </FrameLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <include
+        layout="@layout/item_is_solve" />
+</LinearLayout>

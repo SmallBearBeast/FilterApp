@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="tv_normal">
+        <item name="android:ellipsize">middle</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:text">123</item>
+        <item name="android:textColor">@color/cl_white</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="top_bar">
+        <item name="android:paddingLeft">@dimen/dp_10</item>
+        <item name="android:paddingRight">@dimen/dp_10</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_50</item>
+    </style>
+
+    <style name="sdv_normal">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">@dimen/dp_30</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+
+    <style name="sdv_normal_40">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">@dimen/dp_40</item>
+        <item name="android:layout_height">@dimen/dp_40</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+
+    <style name="sdv_normal_50">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">@dimen/dp_50</item>
+        <item name="android:layout_height">@dimen/dp_50</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+
+
+    <style name="v_mid">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">1px</item>
+    </style>
+
+    <style name="v_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@color/cl_gray_3</item>
+    </style>
+
+    <style name="v_hor_divider">
+        <item name="android:background">@color/cl_gray_3</item>
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    //vertical linearlayout
+
+    <style name="ll_vertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    //vertical linearlayout in center
+
+    <style name="ll_center_vertical" parent="ll_vertical">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    //horizontal linearlayout
+
+    <style name="ll_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    //horizontal linearlayout in center
+
+    <style name="ll_center_horizontal" parent="ll_horizontal">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    //normal edittext
+
+    <style name="et_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:cursorVisible">true</item>
+    </style>
+
+    <style name="iv_normal">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+    <style name="iv_normal_30" parent="iv_normal">
+        <item name="android:layout_width">@dimen/dp_30</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+    </style>
+
+    <style name="iv_normal_40">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">@dimen/dp_40</item>
+        <item name="android:layout_height">@dimen/dp_40</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+
+    <style name="iv_normal_50" parent="iv_normal">
+        <item name="android:layout_width">@dimen/dp_50</item>
+        <item name="android:layout_height">@dimen/dp_50</item>
+    </style>
+
+    <style name="iv_normal_80" parent="iv_normal">
+        <item name="android:layout_width">@dimen/dp_80</item>
+        <item name="android:layout_height">@dimen/dp_80</item>
+    </style>
+
+
+    <style name="rv_normal">
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="fl_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="itv_bottom">
+        <item name="android:layout_width">@dimen/dp_35</item>
+        <item name="android:layout_height">@dimen/dp_35</item>
+        <item name="android:padding">@dimen/dp_5</item>
+    </style>
+
+    <style name="rl_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <style name="vp_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+</resources>
