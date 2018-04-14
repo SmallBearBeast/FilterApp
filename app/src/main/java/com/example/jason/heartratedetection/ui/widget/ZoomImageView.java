@@ -58,7 +58,7 @@ public class ZoomImageView extends View {
     public ZoomImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ZoomImageView);
-        srcId = array.getResourceId(R.styleable.ZoomImageView_src, 0);
+        srcId = array.getResourceId(R.styleable.ZoomImageView_src, -1);
         array.recycle();
 
         matrix = new Matrix();
@@ -83,11 +83,13 @@ public class ZoomImageView extends View {
     protected void onDraw(Canvas canvas) {
         if (isFirstTouch) {
             isFirstTouch = false;
-            if (bitmap == null)
+            if (bitmap == null && srcId != -1)
                 bitmap = initBitmap(BitmapFactory.decodeResource(getResources(), srcId));
-            matrix.preTranslate((width - bitmap.getWidth()) / 2, (height - bitmap.getHeight()) / 2);
+            if (bitmap != null)
+                matrix.preTranslate((width - bitmap.getWidth()) / 2, (height - bitmap.getHeight()) / 2);
         }
-        canvas.drawBitmap(bitmap, matrix, null);
+        if (bitmap != null)
+            canvas.drawBitmap(bitmap, matrix, null);
     }
 
     @Override
@@ -290,8 +292,16 @@ public class ZoomImageView extends View {
             getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    if (bitmap == null)
+                    if (bitmap == null) {
+                        if (width == 0 || height == 0) {
+                            width = getWidth();
+                            height = getHeight();
+                            return;
+                        }
                         bitmap = initBitmap(bm);
+                        invalidate();
+                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
                 }
             });
         }
@@ -427,6 +437,8 @@ public class ZoomImageView extends View {
      * @return
      */
     private Bitmap initBitmap(Bitmap src) {
+        if (src == null)
+            return null;
         Bitmap dst = null;
         int w = src.getWidth();
         int h = src.getHeight();
@@ -459,7 +471,7 @@ public class ZoomImageView extends View {
                     } else if (bmBoundary[3] <= width && dx < 0) {
                         getParent().requestDisallowInterceptTouchEvent(false);
 //                        ((ViewGroup)getParent()).onTouchEvent(event);
-                    }else if (bmBoundary[2] > 0 && bmBoundary[3] < width) {
+                    } else if (bmBoundary[2] > 0 && bmBoundary[3] < width) {
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                 }

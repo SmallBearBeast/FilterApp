@@ -29,7 +29,7 @@
                 android:id="@+id/tv_date_1"
                 style="@style/tv_normal"
                 android:text="图像处理"
-                android:textColor="@color/cl_gray_9"/>
+                android:textColor="@color/cl_gray_9" />
         </LinearLayout>
     </FrameLayout>
 
@@ -42,15 +42,15 @@
             android:id="@+id/iv_solve_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:src="@drawable/pic_9" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_loading"
             style="@style/iv_normal_50"
             android:layout_gravity="center"
-            android:src="@drawable/loading" />
+            android:src="@drawable/loading"
+            android:visibility="gone" />
     </FrameLayout>
 
     <FrameLayout
@@ -63,6 +63,7 @@
             style="@style/ll_vertical">
 
             <HorizontalScrollView
+                android:scrollbars="none"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_120">
 
@@ -70,21 +71,134 @@
                     style="@style/ll_horizontal"
                     android:layout_height="match_parent">
 
-                    <include
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/black_technology"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/technology"
+
+                        app:offset="@dimen/dp_10"
+                        app:shape="CIRCLE"
+                        app:text="黑科技"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
+
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/clip_rotate"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/clip"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="DIAMOND"
+                        app:text="旋转剪切"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
+
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
                         android:id="@+id/filter"
-                        layout="@layout/item_solve_case" />
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/filter"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="CIRCLE"
+                        app:text="旋转剪切"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
 
-                    <include layout="@layout/item_solve_case" />
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/sticker"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/stick"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="DIAMOND"
+                        app:text="贴纸"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
 
-                    <include layout="@layout/item_solve_case" />
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/word"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/text"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="CIRCLE"
+                        app:text="文字"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
 
-                    <include layout="@layout/item_solve_case" />
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/graffiti"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/graffiti"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="DIAMOND"
+                        app:text="涂鸦"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
 
-                    <include layout="@layout/item_solve_case" />
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/mosaic"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/mosaic"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="CIRCLE"
+                        app:text="马赛克"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
 
-                    <include layout="@layout/item_solve_case" />
-
-                    <include layout="@layout/item_solve_case" />
+                    <com.example.jason.heartratedetection.ui.widget.ItemTabView
+                        android:id="@+id/enhanced"
+                        android:layout_width="@dimen/dp_70"
+                        android:layout_height="@dimen/dp_100"
+                        app:borderColor="@color/cl_gray_7"
+                        app:borderSize="@dimen/dp_1"
+                        app:icon="@drawable/enhance"
+                        app:fill="true"
+                        app:iconColor="@color/cl_white"
+                        app:fiilColor="@color/cl_gray_7"
+                        app:offset="@dimen/dp_10"
+                        app:shape="DIAMOND"
+                        app:text="增强"
+                        app:textColor="@color/cl_gray_7"
+                        app:textSize="@dimen/sp_12" />
                 </LinearLayout>
             </HorizontalScrollView>
 

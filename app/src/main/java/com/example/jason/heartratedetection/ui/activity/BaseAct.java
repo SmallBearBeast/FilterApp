@@ -79,16 +79,31 @@ public class BaseAct extends AppCompatActivity {
                 checkPermissions.add(permissions[i]);
             }
         }
-        if (!checkPermissions.isEmpty())
+        if (!checkPermissions.isEmpty()) {
             ActivityCompat.requestPermissions(this, checkPermissions.toArray(new String[checkPermissions.size()]), 0x11);
+            permissionOk(false);
+        }
+        else {
+            permissionOk(true);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean ok = true;
         for (int i = 0; i < permissions.length; i++) {
-            Log.e(TAG, "permissions[" + i + "] = " + permissions[i]);
-            Log.e(TAG, "grantResults[" + i + "] = " + grantResults[i]);
+            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                ok = false;
+                break;
+            }
         }
+        if(ok)
+            permissionOk(ok);
+    }
+
+
+    protected void permissionOk(boolean ok){
+
     }
 }

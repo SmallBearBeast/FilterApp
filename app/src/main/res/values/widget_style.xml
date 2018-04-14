@@ -31,4 +31,31 @@
     <declare-styleable name="ZoomImageView">
         <attr name="src" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="ItemTabView">
+        <attr name="icon" format="reference"/>
+        <attr name="text" format="string"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="borderSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+        <attr name="iconColor" format="color"/>
+        <attr name="fill" format="boolean"/>
+        <attr name="fiilColor" format="color"/>
+        <attr name="borderColor" format="color"/>
+        <attr name="offset" format="dimension"/>
+        <attr name="shape" format="enum">
+            <enum name="NONE" value="0x11"/>
+            <enum name="TRIANGLE" value="0x22"/>
+            <enum name="SQUARE" value="0x33"/>
+            <enum name="PENTAGON" value="0x44"/>
+            <enum name="HEXAGON" value="0x55"/>
+            <enum name="CIRCLE" value="0x66"/>
+            <enum name="DIAMOND" value="0x77"/>
+            <enum name="TOP_TRAPEZOIDAL" value="0x88"/>
+            <enum name="BOTTOM_TRAPEZOIDAL" value="0x99"/>
+            <enum name="OCTAGON" value="0x111"/>
+            <enum name="PENTAGRAM" value="0x112"/>
+            <enum name="CROSS" value="0x113"/>
+        </attr>
+    </declare-styleable>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.jason.heartratedetection.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.jason.heartratedetection.R;
 import com.example.jason.heartratedetection.frame.event.DeleteEvent;
-import com.example.jason.heartratedetection.ui.adapter.PhotoAdapter1;
+import com.example.jason.heartratedetection.ui.adapter.PhotoAdapter;
 import com.example.jason.heartratedetection.ui.popwindow.LoadingWindow;
 import com.example.jason.heartratedetection.ui.popwindow.IsDeleteWindow;
 import com.example.jason.heartratedetection.ui.popwindow.MoreWindow;
@@ -58,7 +60,7 @@ public class PhotoAct extends BaseAct {
     ObjectAnimator bottomOa;
     boolean isShowOa = true;
     List<String> imagePaths = new ArrayList<>();
-    PhotoAdapter1 photoAdapter;
+    PhotoAdapter photoAdapter;
 
     @Override
     protected void init(Bundle bundle) {
@@ -68,7 +70,13 @@ public class PhotoAct extends BaseAct {
         loadingWindow = new LoadingWindow(this, DensityUtil.getScreenWidth(this), DensityUtil.getScreenHeight(this));
         imagePaths = MyUtil.getChildPath(Constant.SRC_IMAGE_DIR);
         Constant.SOLVE_IMAGE_PATH = imagePaths.get(0);
-        photoAdapter = new PhotoAdapter1(imagePaths, vpPhotoContainer);
+        photoAdapter = new PhotoAdapter(imagePaths, vpPhotoContainer);
+        photoAdapter.setOnClickListener(new PhotoAdapter.OnClickListener() {
+            @Override
+            public void onClick() {
+                anim();
+            }
+        });
     }
 
     @Override
@@ -101,6 +109,8 @@ public class PhotoAct extends BaseAct {
     }
 
     private void anim() {
+        if(topOa != null && topOa.isRunning())
+            return;
         if (!isShowOa) {
             topOa = ObjectAnimator.ofFloat(flDate, "translationY", -flDate.getHeight(), 0);
             bottomOa = ObjectAnimator.ofFloat(llSolve, "translationY", llSolve.getHeight(), 0);
@@ -108,11 +118,24 @@ public class PhotoAct extends BaseAct {
             topOa = ObjectAnimator.ofFloat(flDate, "translationY", 0, -flDate.getHeight());
             bottomOa = ObjectAnimator.ofFloat(llSolve, "translationY", 0, llSolve.getHeight());
         }
-        topOa.setDuration(500);
-        bottomOa.setDuration(500);
+        topOa.setDuration(300);
+        bottomOa.setDuration(300);
         topOa.start();
         bottomOa.start();
-        isShowOa = !isShowOa;
+        topOa.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isShowOa = !isShowOa;
+                if (isShowOa)
+                    vpPhotoContainer.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isShowOa)
+                                anim();
+                        }
+                    }, 1500);
+            }
+        });
     }
 
     @Override
@@ -124,9 +147,10 @@ public class PhotoAct extends BaseAct {
     public void onEvent(DeleteEvent event) {
         if (event.getState() == Constant.DELETE_START)
             loadingWindow.showAtLocation(vpPhotoContainer, Gravity.CENTER, 0, 0);
-        else {
+        else if (event.getState() == Constant.DELETE_END) {
             imagePaths.remove(Constant.SOLVE_IMAGE_PATH);
             loadingWindow.dismiss();
+            photoAdapter.notifyDataSetChanged();
         }
     }
 }

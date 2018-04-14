@@ -35,7 +35,7 @@ public class PhotoMsgAct extends BaseAct {
     protected void init(Bundle bundle) {
         super.init(bundle);
         Bitmap bm = MyUtil.scaleBitmap(Constant.SOLVE_IMAGE_PATH, new int[]{
-                DensityUtil.dip2Px(this, 40), DensityUtil.dip2Px(this, 40)
+                DensityUtil.dip2Px(this, 80), DensityUtil.dip2Px(this, 80)
         });
         ivPhoto.setImageBitmap(bm);
         String msg = null;
@@ -47,10 +47,11 @@ public class PhotoMsgAct extends BaseAct {
             tvWidthHeight.setText(msg);
             msg = Constant.SOLVE_IMAGE_PATH;
             tvFileMsg.setText(msg);
-            msg = "model : " + exif.getAttribute(ExifInterface.TAG_MODEL)
-                    + "\nmake : " + exif.getAttribute(ExifInterface.TAG_MAKE)
-                    + "\niso : " + exif.getAttribute(ExifInterface.TAG_ISO)
-                    + "\nflash : " + exif.getAttribute(ExifInterface.TAG_FLASH);
+            String s = null;
+            msg = "Model : " + ((s = exif.getAttribute(ExifInterface.TAG_MODEL)) == null ? "无" : s)
+                    + "\nMake : " + ((s = exif.getAttribute(ExifInterface.TAG_MAKE)) == null ? "无" : s)
+                    + "\nISO : " + ((s = exif.getAttribute(ExifInterface.TAG_ISO)) == null ? "无" : s)
+                    + "\nFlash : " + ((s = exif.getAttribute(ExifInterface.TAG_FLASH)) == null ? "无" : s);
             tvPhotoParam.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();

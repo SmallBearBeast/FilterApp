@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -21,6 +22,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Size;
+import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -32,6 +34,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/9.
@@ -51,12 +54,10 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     private CameraManager cameraManager;
     private Context context;
     private Size previewSize;
-
     private int width = 0;
     private int height = 0;
     private int cameraId = 0;
     private int flashState = 0;
-    private String imageDir = "SRC_IMAGE_DIR";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CameraPhotoView(Context context) {
@@ -67,7 +68,6 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     public CameraPhotoView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        imageDir = context.getExternalCacheDir().getAbsolutePath() + File.separator + imageDir;
         initMemory();
     }
 
@@ -101,18 +101,25 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     private void openCamera() {
         try {
             Log.e(TAG, "openCamera: " + Thread.currentThread());
-            cameraManager.openCamera("" + cameraId, deviceStateCallback, backHandler);
+            cameraManager.openCamera("" + cameraId, deviceStateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
 
+    private void rePreview() {
+        try {
+            captureSession.setRepeatingRequest(previewBuilder.build(), null, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void takePreview() {
         try {
             imageReader = ImageReader.newInstance(previewSize.getWidth(), previewSize.getHeight(), ImageFormat.JPEG, 2);
-            imageReader.setOnImageAvailableListener(imageAvailableListener, backHandler);
+            imageReader.setOnImageAvailableListener(imageAvailableListener, null);
             previewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             previewBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
@@ -121,7 +128,7 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
             previewBuilder.addTarget(surfaceHolder.getSurface());
             cameraDevice.createCaptureSession(
                     Arrays.asList(surfaceHolder.getSurface(), imageReader.getSurface()),
-                    sessionStateCallback, backHandler);
+                    sessionStateCallback, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,11 +140,14 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         if (cameraDevice == null) return;
         try {
             takePicBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            takePicBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            takePicBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-            takePicBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
+//            takePicBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+//            takePicBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_OFF);
+            if(cameraId == 0)
+                takePicBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
+            else
+                takePicBuilder.set(CaptureRequest.JPEG_ORIENTATION, 270);
             takePicBuilder.addTarget(imageReader.getSurface());
-            captureSession.capture(takePicBuilder.build(), null, backHandler);
+            captureSession.capture(takePicBuilder.build(), null, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,6 +157,9 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         openCamera();
+        Size[] sizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG);
+        previewSize = getProperPreSize(sizes);
+        surfaceHolder.setFixedSize(previewSize.getWidth(), previewSize.getHeight());
     }
 
     @Override
@@ -166,13 +179,11 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);//由缓冲区存入字节数组
-            MyUtil.saveBitmap(imageDir, MyUtil.createTimeFileName("jpg"), bytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             if(onCameraListener != null){
-                onCameraListener.onBitmap(bitmap);
+                onCameraListener.onBitmap(bytes);
             }
-            reader.close();
-            takePreview();
+            image.close();
+            rePreview();
         }
     };
 
@@ -192,6 +203,7 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
             stopCamera();
+            MyUtil.showToast("无法启动相机");
         }
     };
 
@@ -201,7 +213,7 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         public void onConfigured(@NonNull CameraCaptureSession session) {
             try {
                 captureSession = session;
-                captureSession.setRepeatingRequest(previewBuilder.build(), null, backHandler);
+                captureSession.setRepeatingRequest(previewBuilder.build(), null, null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -219,6 +231,43 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         openCamera();
     }
 
+
+    private Size getProperPreSize(Size[] preSizeList) {
+
+        int ReqTmpWidth;
+        int ReqTmpHeight;
+        // 当屏幕为垂直的时候需要把宽高值进行调换，保证宽大于高
+        if (true) {
+            ReqTmpWidth = height;
+            ReqTmpHeight = width;
+        } else {
+            ReqTmpWidth = width;
+            ReqTmpHeight = height;
+        }
+        //先查找preview中是否存在与surfaceview相同宽高的尺寸
+        for(Size size : preSizeList){
+            if((size.getWidth() == ReqTmpWidth) && (size.getHeight() == ReqTmpHeight)){
+                return size;
+            }
+        }
+
+        // 得到与传入的宽高比最接近的size
+        float reqRatio = ((float) ReqTmpWidth) / ReqTmpHeight;
+        float curRatio, deltaRatio;
+        float deltaRatioMin = Float.MAX_VALUE;
+        Size retSize = null;
+        for (Size size : preSizeList) {
+            curRatio = ((float) size.getWidth()) / size.getHeight();
+            deltaRatio = Math.abs(reqRatio - curRatio);
+            if (deltaRatio < deltaRatioMin) {
+                deltaRatioMin = deltaRatio;
+                retSize = size;
+            }
+        }
+
+        return retSize;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -227,14 +276,8 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         if (width != w)
             width = w;
         if (width == w && height == h) {
-            surfaceHolder.setFixedSize(previewSize.getWidth(), previewSize.getHeight());
-            setMeasuredDimension(previewSize.getWidth(), previewSize.getHeight());
-        }
-    }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     public void stopCamera() {
@@ -259,7 +302,7 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public static interface OnCameraListener{
-        void onBitmap(Bitmap bitmap);
+        void onBitmap(byte[] bytes);
     }
 
     private OnCameraListener onCameraListener;

@@ -6,9 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.camera2.CaptureRequest;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.example.jason.heartratedetection.R;
@@ -16,6 +18,10 @@ import com.example.jason.heartratedetection.ui.widget.CameraPhotoView;
 import com.example.jason.heartratedetection.ui.widget.PhotoCameraView;
 import com.example.jason.heartratedetection.util.Constant;
 import com.example.jason.heartratedetection.util.MyUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,17 +46,43 @@ public class CameraAct extends BaseAct {
     @Override
     protected void init(Bundle bundle) {
         super.init(bundle);
+        ivPhoto.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                List<String> pathes = MyUtil.getChildPath(Constant.SRC_IMAGE_DIR);
+                String firstPath = null;
+                if(pathes.size() != 0)
+                    firstPath = pathes.get(0);
+                ivPhoto.setImageBitmap(MyUtil.scaleBitmap(firstPath, ivPhoto));
+            }
+        });
         cpvCamera.setOnCameraListener(new CameraPhotoView.OnCameraListener() {
             @Override
-            public void onBitmap(Bitmap bitmap) {
-                CameraAct.this.bitmap = MyUtil.scaleBitmap(bitmap, ivPhoto);
-                Log.e(TAG, "Thread.currentThread() = " + Thread.currentThread());
-                ivPhoto.post(new Runnable() {
+            public void onBitmap(final byte[] bytes) {
+                MyUtil.run(new Runnable() {
                     @Override
                     public void run() {
-                        ivPhoto.setImageBitmap(CameraAct.this.bitmap);
+                        String name = MyUtil.createTimeFileName("jpg");
+                        MyUtil.saveBitmap(Constant.SRC_IMAGE_DIR, name, bytes);
+                        try {
+                            ExifInterface exif = new ExifInterface(Constant.SRC_IMAGE_DIR + File.separator + name);
+                            String value = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+                            exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifInterface.ORIENTATION_ROTATE_90));
+                            exif.saveAttributes();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        bitmap = MyUtil.scaleBitmap(Constant.SRC_IMAGE_DIR + File.separator + name, ivPhoto);
+                        ivPhoto.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ivPhoto.setImageBitmap(bitmap);
+                            }
+                        });
                     }
                 });
+                // TODO: 2018/4/2 下面这句代码有毒，一调用就会放大SurfaceView 
+                //ivPhoto.setImageBitmap(CameraAct.this.bitmap);
             }
         });
     }

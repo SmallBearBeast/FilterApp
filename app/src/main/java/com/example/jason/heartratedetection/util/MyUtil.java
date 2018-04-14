@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Environment;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,6 +46,17 @@ public class MyUtil {
         }
     }
 
+    public static boolean isContainView(ViewGroup container, View child){
+        if(child == null || container == null)
+            return false;
+        int count = container.getChildCount();
+        for (int i = 0; i < count; i++) {
+            if(container.getChildAt(i) == child)
+                return true;
+        }
+        return false;
+    }
+
     public static List<String> getChildPath(String dir) {
         File file = new File(dir);
         File[] files = file.listFiles();
@@ -53,7 +66,8 @@ public class MyUtil {
                 list.add(files[i].getAbsolutePath());
             }
             String[] T = new String[list.size()];
-            Arrays.sort(list.toArray(T), new Comparator<String>() {
+            T = list.toArray(T);
+            Arrays.sort(T, new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
                     return o2.compareTo(o1);
@@ -95,7 +109,10 @@ public class MyUtil {
         op.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, op);
         float scale = Math.max(op.outWidth * 1f / size[0], op.outHeight * 1f / size[1]);
-        op.inSampleSize = (int) (scale + 1);
+        if(scale <= 1.0f)
+            op.inSampleSize = 1;
+        else
+            op.inSampleSize = (int) scale;
         op.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, op);
     }
@@ -144,4 +161,5 @@ public class MyUtil {
     public static Bitmap scaleBitmap(String path, ImageView iv) {
         return scaleBitmap(path, new int[]{iv.getWidth(), iv.getHeight()});
     }
+
 }

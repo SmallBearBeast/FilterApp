@@ -21,14 +21,6 @@
             android:layout_gravity="center"
             android:text="照片详情"
             android:textColor="@color/cl_gray_7" />
-
-        <ImageView
-            android:id="@+id/iv_photo"
-            style="@style/iv_normal_40"
-            android:layout_gravity="right|center_vertical"
-            android:padding="@dimen/dp_0"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pic_9" />
     </FrameLayout>
 
     <View style="@style/v_divider" />
@@ -42,7 +34,16 @@
             android:gravity="left"
             style="@style/ll_vertical">
 
+            <ImageView
+                android:id="@+id/iv_photo"
+                style="@style/iv_normal_80"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/dp_0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_9" />
+
             <LinearLayout
+                android:layout_marginTop="@dimen/dp_10"
                 style="@style/ll_horizontal">
                 <TextView
                     android:text="拍摄时间 : "

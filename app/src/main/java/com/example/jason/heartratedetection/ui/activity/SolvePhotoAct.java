@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.OnClick;
 
 /**
@@ -35,6 +36,10 @@ import butterknife.OnClick;
  */
 
 public class SolvePhotoAct extends BaseAct {
+//    @BindViews({R.id.black_technology, R.id.clip_rotate, R.id.filter
+//            , R.id.sticker, R.id.word, R.id.graffiti, R.id.mosaic
+//            , R.id.enhanced})
+//    View[] itemViews;
     @BindView(R.id.stv_save)
     ShapeTextView stvSave;
     @BindView(R.id.fl_solve_case)
@@ -60,9 +65,9 @@ public class SolvePhotoAct extends BaseAct {
             @Override
             public void onGlobalLayout() {
                 if (Constant.SRC_BITMAP == null) {
-                    Constant.SRC_BITMAP = MyUtil.scaleBitmap(Constant.SOLVE_IMAGE_PATH, ivSolvePhoto);
+                    Constant.SRC_BITMAP = MyUtil.scaleBitmap(Constant.SOLVE_IMAGE_PATH, new int[]{ivSolvePhoto.getWidth() / 2, ivSolvePhoto.getHeight() / 2});
                     Constant.SOLVE_BITMAP = Constant.SRC_BITMAP.copy(Constant.SRC_BITMAP.getConfig(), true);
-                    ivSolvePhoto.setImageBitmap(Constant.SRC_BITMAP);
+                    ivSolvePhoto.setImageBitmap(MyUtil.scaleBitmap(Constant.SRC_BITMAP, ivSolvePhoto));
                 }
             }
         });
@@ -77,10 +82,10 @@ public class SolvePhotoAct extends BaseAct {
         return R.layout.act_solve;
     }
 
-    @OnClick({R.id.filter, R.id.stv_save, R.id.stv_cancel, R.id.siv_back})
+    @OnClick({R.id.black_technology, R.id.stv_save, R.id.stv_cancel, R.id.siv_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.filter:
+            case R.id.black_technology:
                 curSolveView = solveView;
                 llSolveContainer.setVisibility(View.GONE);
                 flSolveContainer.addView(solveView);
@@ -97,6 +102,7 @@ public class SolvePhotoAct extends BaseAct {
 //                        FormatUtil.rgbToGray(bm, solveView.getThreshold());
 //                        MyUtil.saveBitmap(Constant.SOLVE_IMAGE_DIR, MyUtil.createTimeFileName("jpg"), bm);
                         loadingWindow.dismiss();
+                        Constant.clearBitmap();
                         finish();
                     }
                 });
@@ -134,13 +140,13 @@ public class SolvePhotoAct extends BaseAct {
 
     public void complete() {
         Constant.SRC_BITMAP = Constant.SOLVE_BITMAP.copy(Constant.SOLVE_BITMAP.getConfig(), true);
-        ivSolvePhoto.setImageBitmap(Constant.SRC_BITMAP);
+        ivSolvePhoto.setImageBitmap(MyUtil.scaleBitmap(Constant.SRC_BITMAP, ivSolvePhoto));
         llSolveContainer.setVisibility(View.VISIBLE);
         flSolveContainer.removeView(curSolveView);
     }
 
     public void cancel() {
-        ivSolvePhoto.setImageBitmap(Constant.SRC_BITMAP);
+        ivSolvePhoto.setImageBitmap(MyUtil.scaleBitmap(Constant.SRC_BITMAP, ivSolvePhoto));
         llSolveContainer.setVisibility(View.VISIBLE);
         flSolveContainer.removeView(curSolveView);
     }
@@ -151,12 +157,12 @@ public class SolvePhotoAct extends BaseAct {
     }
 
     public void solveEnd() {
-        ivSolvePhoto.setImageBitmap(Constant.SOLVE_BITMAP);
+        ivSolvePhoto.setImageBitmap(MyUtil.scaleBitmap(Constant.SOLVE_BITMAP, ivSolvePhoto));
         loadingWindow.dismiss();
     }
 
     public void reset() {
-        ivSolvePhoto.setImageBitmap(Constant.SRC_BITMAP);
+        ivSolvePhoto.setImageBitmap(MyUtil.scaleBitmap(Constant.SRC_BITMAP, ivSolvePhoto));
     }
 
     @Override

@@ -1,15 +1,14 @@
 package com.example.jason.heartratedetection.ui.adapter;
 
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.example.jason.heartratedetection.R;
-import com.example.jason.heartratedetection.ui.activity.PhotoAct;
 import com.example.jason.heartratedetection.ui.widget.ZoomImageView;
+import com.example.jason.heartratedetection.util.Constant;
 import com.example.jason.heartratedetection.util.MyUtil;
 
 import java.util.ArrayList;
@@ -20,12 +19,9 @@ import java.util.List;
  */
 
 public class PhotoAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
-    private List<ZoomImageView> views = new ArrayList<>();
     private int index = 0;
-    private int viewPos = 0;
     private List<String> imagePaths = new ArrayList<>();
     private ViewPager viewPager;
-    private final int Length = 3;
     private int[] size = new int[2];
 
 
@@ -33,20 +29,13 @@ public class PhotoAdapter extends PagerAdapter implements ViewPager.OnPageChange
         this.imagePaths = path;
         this.viewPager = vp;
         viewPager.addOnPageChangeListener(this);
+        removeView = new ZoomImageView(viewPager.getContext());
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (size[0] == 0 && size[1] == 0) {
                     size[0] = viewPager.getWidth() / 2;
                     size[1] = viewPager.getHeight() / 2;
-                    for (int i = 0; i < 3; i++) {
-                        if (i < imagePaths.size()) {
-//                        ZoomImageView ziv = (ZoomImageView) LayoutInflater.from(viewPager.getContext()).inflate(R.layout.item_photo, null);
-                            ZoomImageView ziv = new ZoomImageView(viewPager.getContext());
-                            ziv.setBitmap(MyUtil.scaleBitmap(imagePaths.get(i), size));
-                            views.add(ziv);
-                        }
-                    }
                     viewPager.setAdapter(PhotoAdapter.this);
                 }
             }
@@ -59,56 +48,11 @@ public class PhotoAdapter extends PagerAdapter implements ViewPager.OnPageChange
 
     }
 
-    boolean filter = false;
 
     @Override
     public void onPageSelected(int position) {
-        if (filter) {
-            filter = false;
-            return;
-        }
-
-        if (viewPos < position) {
-            index++;
-            if (position == 2 && index < imagePaths.size() - 1) {
-                viewPager.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ZoomImageView ziv = null;
-                        for (int i = 0; i < views.size() - 1; i++) {
-                            ziv = views.get(i);
-                            ziv.setBitmap(MyUtil.scaleBitmap(imagePaths.get(index - 1 + i), size));
-                        }
-                        filter = true;
-                        viewPager.setCurrentItem(1, false);
-                        ziv = views.get(views.size() - 1);
-                        ziv.setBitmap(MyUtil.scaleBitmap(imagePaths.get(index + 1), size));
-                    }
-                }, 500);
-                viewPos = 1;
-            } else
-                viewPos = position;
-        } else if (viewPos > position) {
-            index--;
-            if (position == 0 && index > 0) {
-                viewPager.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ZoomImageView ziv = null;
-                        for (int i = views.size() - 1; i > 0; i--) {
-                            ziv = views.get(i);
-                            ziv.setBitmap(MyUtil.scaleBitmap(imagePaths.get(index + i - 1), size));
-                        }
-                        filter = true;
-                        viewPager.setCurrentItem(1, false);
-                        ziv = views.get(0);
-                        ziv.setBitmap(MyUtil.scaleBitmap(imagePaths.get(index - 1), size));
-                    }
-                }, 500);
-                viewPos = 1;
-            } else
-                viewPos = position;
-        }
+        Constant.SOLVE_IMAGE_PATH = imagePaths.get(position);
+        index = position;
     }
 
     @Override
@@ -116,17 +60,9 @@ public class PhotoAdapter extends PagerAdapter implements ViewPager.OnPageChange
 
     }
 
-    public void setViewPager(ViewPager viewPager) {
-        this.viewPager = viewPager;
-    }
-
-    public void setImagePaths(List<String> imagePaths) {
-        this.imagePaths = imagePaths;
-    }
-
     @Override
     public int getCount() {
-        return views.size();
+        return imagePaths.size();
     }
 
     @Override
@@ -134,18 +70,67 @@ public class PhotoAdapter extends PagerAdapter implements ViewPager.OnPageChange
         return view == object;
     }
 
+    ZoomImageView removeView;
+    ZoomImageView cacheView;
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(views.get(position));
-        return views.get(position);
+        ZoomImageView ziv = null;
+        if(MyUtil.isContainView(container, cacheView))
+            ziv = new ZoomImageView(container.getContext());
+        else if (cacheView == null)
+            ziv = new ZoomImageView(container.getContext());
+        else ziv = cacheView;
+        run(ziv, position);
+        container.addView(ziv);
+        ziv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickListener != null) {
+                    onClickListener.onClick();
+                }
+            }
+        });
+        return ziv;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(views.get(position));
+        container.removeView((View) object);
+        cacheView = (ZoomImageView) object;
     }
 
-    public String getCurPhotoPath(){
+    public String getCurPhotoPath() {
         return imagePaths.get(index);
+    }
+
+    private void run(final ZoomImageView ziv, final int pos) {
+        MyUtil.run(new Runnable() {
+            @Override
+            public void run() {
+                final Bitmap bm = MyUtil.scaleBitmap(imagePaths.get(pos), size);
+                viewPager.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ziv.setBitmap(bm);
+                    }
+                });
+            }
+        });
+    }
+
+    public interface OnClickListener {
+        void onClick();
+    }
+
+    private OnClickListener onClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }

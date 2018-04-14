@@ -41,9 +41,9 @@ public class IsDeleteWindow extends BaseWindow {
                     MyUtil.run(new Runnable() {
                         @Override
                         public void run() {
-//                            MyUtil.deleteFile(Constant.SOLVE_IMAGE_PATH);
+                            MyUtil.deleteFile(Constant.SOLVE_IMAGE_PATH);
                             try {
-                                Thread.sleep(3000);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
