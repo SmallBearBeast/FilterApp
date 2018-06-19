@@ -1,6 +1,7 @@
 package com.example.jason.heartratedetection.ui.widget;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
@@ -22,7 +24,9 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Size;
+import android.util.SparseIntArray;
 import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -31,6 +35,7 @@ import com.example.jason.heartratedetection.util.MyUtil;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,7 +63,16 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     private int height = 0;
     private int cameraId = 0;
     private int flashState = 0;
+    private int sensorOrientation = 0;
+    private int displayRotation = 0;
 
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CameraPhotoView(Context context) {
         this(context, null);
@@ -84,23 +98,48 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         try {
             // 获取指定摄像头的特性
             characteristics = cameraManager.getCameraCharacteristics(cameraId + "");
-            previewSize = Collections.max(Arrays.asList(characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
-                @Override
-                public int compare(Size o1, Size o2) {
-                    return Long.signum((long) o1.getWidth() * o1.getHeight() -
-                            (long) o2.getWidth() * o2.getHeight());
-                }
-            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "WrongConstant"})
     private void openCamera() {
         try {
-            Log.e(TAG, "openCamera: " + Thread.currentThread());
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            Size radioSize = Collections.max(
+                    Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+                    new CompareSizesByArea()
+            );
+            displayRotation = ((Activity)context).getWindowManager().getDefaultDisplay().getRotation();
+            sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            boolean swapped = false;
+            switch (displayRotation) {
+                case Surface.ROTATION_0:
+                case Surface.ROTATION_180:
+                    if (sensorOrientation == 90 || sensorOrientation == 270) {
+                        swapped = true;
+                    }
+                    break;
+                case Surface.ROTATION_90:
+                case Surface.ROTATION_270:
+                    if (sensorOrientation == 0 || sensorOrientation == 180) {
+                        swapped = true;
+                    }
+                    break;
+                default:
+                    Log.e(TAG, "Display rotation is invalid: " + displayRotation);
+            }
+            Size maxSize = new Size(width, height);
+            if(swapped)
+                maxSize = new Size(height, width);
+            previewSize = getProperPreSize(characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(SurfaceHolder.class), maxSize, radioSize);
+            surfaceHolder.setFixedSize(radioSize.getWidth() , radioSize.getHeight());
+            if(swapped)
+                setAspectRatio(previewSize.getHeight() , previewSize.getWidth());
+            else
+                setAspectRatio(previewSize.getWidth() , previewSize.getHeight());
             cameraManager.openCamera("" + cameraId, deviceStateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -121,6 +160,7 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
             imageReader = ImageReader.newInstance(previewSize.getWidth(), previewSize.getHeight(), ImageFormat.JPEG, 2);
             imageReader.setOnImageAvailableListener(imageAvailableListener, null);
             previewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            surfaceHolder.setFixedSize(previewSize.getWidth() , previewSize.getHeight());
             previewBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             previewBuilder.set(CaptureRequest.CONTROL_AE_MODE,
@@ -140,8 +180,8 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         if (cameraDevice == null) return;
         try {
             takePicBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-//            takePicBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-//            takePicBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_OFF);
+            takePicBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            takePicBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_OFF);
             if(cameraId == 0)
                 takePicBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
             else
@@ -157,9 +197,6 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         openCamera();
-        Size[] sizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG);
-        previewSize = getProperPreSize(sizes);
-        surfaceHolder.setFixedSize(previewSize.getWidth(), previewSize.getHeight());
     }
 
     @Override
@@ -232,51 +269,46 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
     }
 
 
-    private Size getProperPreSize(Size[] preSizeList) {
-
-        int ReqTmpWidth;
-        int ReqTmpHeight;
-        // 当屏幕为垂直的时候需要把宽高值进行调换，保证宽大于高
-        if (true) {
-            ReqTmpWidth = height;
-            ReqTmpHeight = width;
+    private Size getProperPreSize(Size[] sizes, Size maxSize, Size ratioSize) {
+        int w = ratioSize.getWidth();
+        int h = ratioSize.getHeight();
+        List<Size> result = new ArrayList<>();
+        for (Size size : sizes) {
+            if (size.getWidth() <= maxSize.getWidth() && size.getHeight() <= maxSize.getHeight() &&
+                    size.getHeight() == size.getWidth() * h / w) {
+                result.add(size);
+            }
+        }
+        if (result.size() > 0) {
+            return Collections.max(result, new CompareSizesByArea());
         } else {
-            ReqTmpWidth = width;
-            ReqTmpHeight = height;
+            Log.e(TAG, "Couldn't find any suitable preview size");
+            return sizes[0];
         }
-        //先查找preview中是否存在与surfaceview相同宽高的尺寸
-        for(Size size : preSizeList){
-            if((size.getWidth() == ReqTmpWidth) && (size.getHeight() == ReqTmpHeight)){
-                return size;
-            }
-        }
+    }
 
-        // 得到与传入的宽高比最接近的size
-        float reqRatio = ((float) ReqTmpWidth) / ReqTmpHeight;
-        float curRatio, deltaRatio;
-        float deltaRatioMin = Float.MAX_VALUE;
-        Size retSize = null;
-        for (Size size : preSizeList) {
-            curRatio = ((float) size.getWidth()) / size.getHeight();
-            deltaRatio = Math.abs(reqRatio - curRatio);
-            if (deltaRatio < deltaRatioMin) {
-                deltaRatioMin = deltaRatio;
-                retSize = size;
-            }
-        }
+    private int ratioWidth = 0;
+    private int ratioHeight = 0;
 
-        return retSize;
+    public void setAspectRatio(int width, int height) {
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("Size cannot be negative.");
+        }
+        ratioWidth = width;
+        ratioHeight = height;
+        requestLayout();
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if (height != h)
-            height = h;
-        if (width != w)
-            width = w;
-        if (width == w && height == h) {
-
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        width = MeasureSpec.getSize(widthMeasureSpec);
+        height = MeasureSpec.getSize(heightMeasureSpec);
+        if (0 == ratioWidth || 0 == ratioHeight) {
+            setMeasuredDimension(width, height);
+        } else {
+            float scale = Math.min(width * 1f / ratioWidth, height * 1f / ratioHeight);
+            setMeasuredDimension((int) (ratioWidth * scale), (int) (ratioHeight * scale));
         }
     }
 
@@ -301,6 +333,10 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+    private int getOrientation(int rotation) {
+        return (ORIENTATIONS.get(rotation) + sensorOrientation + 270) % 360;
+    }
+
     public static interface OnCameraListener{
         void onBitmap(byte[] bytes);
     }
@@ -309,6 +345,16 @@ public class CameraPhotoView extends SurfaceView implements SurfaceHolder.Callba
 
     public void setOnCameraListener(OnCameraListener onCameraListener) {
         this.onCameraListener = onCameraListener;
+    }
+
+    static class CompareSizesByArea implements Comparator<Size> {
+        @Override
+        public int compare(Size lhs, Size rhs) {
+            // We cast here to ensure the multiplications won't overflow
+            return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
+                    (long) rhs.getWidth() * rhs.getHeight());
+        }
+
     }
 }
 

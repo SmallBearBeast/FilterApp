@@ -1,12 +1,3 @@
-/*
- * Brief:The CPP file is the main document to realize the heart rate detection,
- * and the introduction of CPP code through the JNI interface is the core of
- * the APP's algorithm function.
- * Author:Jason.Lee
- * Date:2017-10-03
- * CopyRight：Computer vision laboratory of HeFei university of technology.
- * */
-
 #include <jni.h>
 #include <GuideFilter.h>
 #include <android/bitmap.h>

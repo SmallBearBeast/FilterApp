@@ -78,7 +78,6 @@
                         app:borderColor="@color/cl_gray_7"
                         app:borderSize="@dimen/dp_1"
                         app:icon="@drawable/technology"
-
                         app:offset="@dimen/dp_10"
                         app:shape="CIRCLE"
                         app:text="黑科技"

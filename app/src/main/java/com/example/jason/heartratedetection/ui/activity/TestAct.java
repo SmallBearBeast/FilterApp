@@ -9,6 +9,6 @@ import com.example.jason.heartratedetection.R;
 public class TestAct extends BaseAct {
     @Override
     protected int layoutId() {
-        return R.layout.item_photo;
+        return R.layout.act_test;
     }
 }
